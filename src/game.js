@@ -38,8 +38,9 @@ class playGame extends Phaser.Scene{
         super("PlayGame");
     }
     preload(){
-        this.load.image("platform", "./assets/platform.png");
-        this.load.image("player", "./assets/player.png");
+        this.load.image("platform", "./assets/sprites/platform.png");
+        this.load.image("player", "./assets/sprites/player.png");
+        this.load.audio("jump_sfx", "./assets/SFX/Jump3.wav")
     }
     create(){
 
@@ -106,6 +107,7 @@ class playGame extends Phaser.Scene{
             }
             this.player.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps ++;
+            this.sound.play("jump_sfx", {volume: 0.1});
         }
     }
     update(){

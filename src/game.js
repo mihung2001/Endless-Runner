@@ -41,9 +41,12 @@ class playGame extends Phaser.Scene{
         this.load.image("platform", "./assets/sprites/platform.png");
         this.load.image("player", "./assets/sprites/player.png");
         this.load.audio("jump_sfx", "./assets/SFX/Jump3.wav")
+        this.load.image("background", "./assets/sprites/background.png")
     }
     
     create(){
+
+        this.background = this.add.tileSprite(0, 0, 1334, 750, 'background').setOrigin(0, 0);
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -80,7 +83,7 @@ class playGame extends Phaser.Scene{
 
         let timeElapsedConfig = {
             fontFamily: 'Lucida Console',
-            fontSize: '24px',
+            fontSize: '32px',
             backgroundColor: '#171717',
             color: '#FFFFFFFF',
             align:'right',
@@ -93,6 +96,7 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0
         }
         this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Score: ', timeElapsedConfig);
+        this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 })
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -128,8 +132,11 @@ class playGame extends Phaser.Scene{
     }
     update(){
 
+        this.background.tilePositionX += 1;
+
         if(this.player.y < game.config.height){
-            this.elapsedTime.setText('Score:' + parseInt(this.time.now/1000))
+            console.log(this.seconds.getElapsedSeconds());
+            this.elapsedTime.setText('Time:' + parseInt(this.seconds.getElapsedSeconds()) + 's');
         }
 
         // game over

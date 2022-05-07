@@ -42,8 +42,8 @@ class playGame extends Phaser.Scene{
         this.load.image("player", "./assets/sprites/player.png");
         this.load.audio("jump_sfx", "./assets/SFX/Jump3.wav")
     }
+    
     create(){
-
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -77,6 +77,22 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on("pointerdown", this.jump, this);
+
+        let timeElapsedConfig = {
+            fontFamily: 'Lucida Console',
+            fontSize: '24px',
+            backgroundColor: '#171717',
+            color: '#FFFFFFFF',
+            align:'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+                left: 5,
+                right: 5,
+            },
+            fixedWidth: 0
+        }
+        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Score: ', timeElapsedConfig);
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -106,15 +122,19 @@ class playGame extends Phaser.Scene{
                 this.playerJumps = 0;
             }
             this.player.setVelocityY(gameOptions.jumpForce * -1);
-            this.playerJumps ++;
+            this.playerJumps +=1;
             this.sound.play("jump_sfx", {volume: 0.1});
         }
     }
     update(){
 
+        if(this.player.y < game.config.height){
+            this.elapsedTime.setText('Score:' + parseInt(this.time.now/1000))
+        }
+
         // game over
         if(this.player.y > game.config.height){
-            this.scene.start("PlayGame");
+            this.scene.restart("PlayGame");
         }
         this.player.x = gameOptions.playerStartPosition;
 

@@ -45,6 +45,9 @@ class playGame extends Phaser.Scene{
     }
     
     create(){
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+        this.gameOver = false;
 
         this.background = this.add.tileSprite(0, 0, 1334, 750, 'background').setOrigin(0, 0);
         // group with all active platforms.
@@ -97,6 +100,7 @@ class playGame extends Phaser.Scene{
         }
         this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Score: ', timeElapsedConfig);
         this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 })
+
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -141,8 +145,19 @@ class playGame extends Phaser.Scene{
 
         // game over
         if(this.player.y > game.config.height){
+            this.gameOver = true;
+            console.log(this.game)
+            //this.scene.pause();
+            this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
+            this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
+        }
+
+        //this.scene.restart("PlayGame");
+        if(this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)){
+            console.log(this.spacebar)
             this.scene.restart("PlayGame");
         }
+
         this.player.x = gameOptions.playerStartPosition;
 
         // recycling platforms

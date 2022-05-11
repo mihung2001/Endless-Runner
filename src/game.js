@@ -147,7 +147,6 @@ class playGame extends Phaser.Scene{
         if(this.player.y > game.config.height){
             this.gameOver = true;
             console.log(this.game)
-            //this.scene.pause();
             this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
             this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
         }

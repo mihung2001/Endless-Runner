@@ -101,15 +101,9 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-<<<<<<< HEAD
-        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'SCORE: ', timeElapsedConfig);
-        this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 })
-
-=======
         this.longestTime = this.add.text(game.config.width / 1.29, game.config.height * 0.0001, ' 0:Longest Time', timeElapsedConfig);
         this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
         this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
->>>>>>> 89a81d0062b2af31700814172cc63a29c44f95b8
     }
 
     // the core of the script: platform are added from the pool or created on the fly

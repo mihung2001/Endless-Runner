@@ -4,11 +4,11 @@ let game;
 let gameOptions = {
     platformStartSpeed: 350,
     spawnRange: [100, 350],
-    platformSizeRange: [50, 250],
-    playerGravity: 900,
-    jumpForce: 400,
+    platformSizeRange: [30, 250],
+    playerGravity: 1500,
+    jumpForce: 700,
     playerStartPosition: 200,
-    jumps: 2
+    jumps: 3
 }
 
 window.onload = function() {
@@ -40,7 +40,8 @@ class playGame extends Phaser.Scene{
     preload(){
         this.load.image("platform", "./assets/sprites/platform.png");
         this.load.image("player", "./assets/sprites/player.png");
-        this.load.audio("jump_sfx", "./assets/SFX/Jump3.wav")
+        this.load.audio("first", "./assets/SFX/first.mp3")
+        this.load.audio("second", "./assets/SFX/second.mp3")
         this.load.image("background", "./assets/sprites/background.png")
     }
     
@@ -98,7 +99,7 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Score: ', timeElapsedConfig);
+        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'SCORE: ', timeElapsedConfig);
         this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 })
 
     }
@@ -131,16 +132,33 @@ class playGame extends Phaser.Scene{
             }
             this.player.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps +=1;
-            this.sound.play("jump_sfx", {volume: 0.1});
+
+            if (this.playerJumps > 1) {
+                this.sound.play("second", {volume: 0.1});
+            }
+            else {
+                this.sound.play("first", {volume: 0.1});
+              }
+
+            
+            
         }
     }
     update(){
 
         this.background.tilePositionX += 1;
+        if(gameOptions.playerStartPosition < 365){
+            gameOptions.platformStartSpeed += .5;
+        }
+        
+        if(gameOptions.platformSizeRange[1] > 50){
+            gameOptions.platformSizeRange[1] -= .005;
+        }
+        
 
         if(this.player.y < game.config.height){
-            console.log(this.seconds.getElapsedSeconds());
-            this.elapsedTime.setText('Time:' + parseInt(this.seconds.getElapsedSeconds()) + 's');
+            //console.log(this.seconds.getElapsedSeconds());
+            this.elapsedTime.setText('SCORE: ' + parseInt(10 * this.seconds.getElapsedSeconds()) + '0');
         }
 
         // game over
@@ -155,6 +173,9 @@ class playGame extends Phaser.Scene{
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)){
             console.log(this.spacebar)
             this.scene.restart("PlayGame");
+            gameOptions.platformStartSpeed = 350;
+            gameOptions.platformSizeRange = [120, 250];
+        
         }
 
         this.player.x = gameOptions.playerStartPosition;
@@ -164,6 +185,7 @@ class playGame extends Phaser.Scene{
         this.platformGroup.getChildren().forEach(function(platform){
             let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
             minDistance = Math.min(minDistance, platformDistance);
+            
             if(platform.x < - platform.displayWidth / 2){
                 this.platformGroup.killAndHide(platform);
                 this.platformGroup.remove(platform);

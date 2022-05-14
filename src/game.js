@@ -209,7 +209,7 @@ class playGame extends Phaser.Scene{
         if (this.secondsElapsed > localStorage.getItem("HighScore")) {
             this.highScoreNumber = this.secondsElapsed
             localStorage.setItem("HighScore", this.highScoreNumber);
-            this.highScoreText.text = localStorage.getItem("HighScore") + ":Longest Time";
+            this.highScoreText.text = localStorage.getItem("HighScore") + ":High Score";
             console.log(this.highScoreNumber)
         }
      };

@@ -49,6 +49,8 @@ class playGame extends Phaser.Scene{
 
         this.gameOver = false;
 
+        this.mostSeconds = 0;
+
         this.background = this.add.tileSprite(0, 0, 1334, 750, 'background').setOrigin(0, 0);
         // group with all active platforms.
         this.platformGroup = this.add.group({
@@ -98,9 +100,9 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Score: ', timeElapsedConfig);
-        this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 })
-
+        this.longestTime = this.add.text(game.config.width / 1.29, game.config.height * 0.0001, ' 0:Longest Time', timeElapsedConfig);
+        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
+        this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -134,6 +136,7 @@ class playGame extends Phaser.Scene{
             this.sound.play("jump_sfx", {volume: 0.1});
         }
     }
+    
     update(){
 
         this.background.tilePositionX += 1;
@@ -149,6 +152,8 @@ class playGame extends Phaser.Scene{
             console.log(this.game)
             this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
             this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
+            this.highScore();
+            
         }
 
         //this.scene.restart("PlayGame");
@@ -175,7 +180,15 @@ class playGame extends Phaser.Scene{
             var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
             this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
         }
-    }
+    };
+
+    highScore() { 
+        if (this.seconds.getElapsedSeconds() > localStorage.getItem("HighScore")) {
+            this.mostSeconds = this.seconds.getElapsedSeconds();
+            localStorage.setItem("HighScore", this.seconds.elapsedTime());
+            this.longestTime.text = localStorage.getItem("HighScore") + ":Longest Time";
+        }
+     };
 };
 function resize(){
     let canvas = document.querySelector("canvas");

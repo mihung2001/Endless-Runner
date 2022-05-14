@@ -101,9 +101,11 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-        this.longestTime = this.add.text(game.config.width / 1.29, game.config.height * 0.0001, ' 0:Longest Time', timeElapsedConfig);
-        this.elapsedTime = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
-        this.seconds = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
+        this.highScoreNumber = 0;
+        this.highScoreText = this.add.text(game.config.width / 1.29, game.config.height * 0.0001, localStorage.getItem("HighScore") + ":Longest Time", timeElapsedConfig);
+        this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
+        this.scoreCounter = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
+        this.secondsElapsed = this.scoreCounter.getElapsedSeconds()
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -161,23 +163,22 @@ class playGame extends Phaser.Scene{
 
         if(this.player.y < game.config.height){
             //console.log(this.seconds.getElapsedSeconds());
-            this.elapsedTime.setText('SCORE: ' + parseInt(10 * this.seconds.getElapsedSeconds()) + '0');
+            this.scoreText.setText('SCORE: ' + parseInt(10 * this.scoreCounter.getElapsedSeconds()) + '0');
         }
 
         // game over
         if(this.player.y > game.config.height){
+            this.highScore();
             this.gameOver = true;
-            console.log(this.game)
+            console.log(this.highScoreNumber)
             this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
             this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
-            this.highScore();
             
         }
 
         //this.scene.restart("PlayGame");
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)){
-            console.log(this.spacebar)
-            this.scene.restart("PlayGame");
+            this.scene.start("PlayGame");
             gameOptions.platformStartSpeed = 350;
             gameOptions.platformSizeRange = [120, 250];
         
@@ -205,10 +206,11 @@ class playGame extends Phaser.Scene{
     };
 
     highScore() { 
-        if (this.seconds.getElapsedSeconds() > localStorage.getItem("HighScore")) {
-            this.mostSeconds = this.seconds.getElapsedSeconds();
-            localStorage.setItem("HighScore", this.seconds.elapsedTime());
-            this.longestTime.text = localStorage.getItem("HighScore") + ":Longest Time";
+        if (this.secondsElapsed > localStorage.getItem("HighScore")) {
+            this.highScoreNumber = this.secondsElapsed
+            localStorage.setItem("HighScore", this.highScoreNumber);
+            this.highScoreText.text = localStorage.getItem("HighScore") + ":Longest Time";
+            console.log(this.highScoreNumber)
         }
      };
 };

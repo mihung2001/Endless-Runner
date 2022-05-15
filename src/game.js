@@ -101,11 +101,11 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-        this.highScoreNumber = 0;
-        this.highScoreText = this.add.text(game.config.width / 1.29, game.config.height * 0.0001, localStorage.getItem("HighScore") + ":Longest Time", timeElapsedConfig);
+        this.highScoreText = this.add.text(game.config.width / 1.315, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", timeElapsedConfig);
         this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
-        this.scoreCounter = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
-        this.secondsElapsed = this.scoreCounter.getElapsedSeconds()
+        this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
+        this.score = 0
+        this.highScore = 0
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -162,15 +162,14 @@ class playGame extends Phaser.Scene{
         
 
         if(this.player.y < game.config.height){
-            //console.log(this.seconds.getElapsedSeconds());
-            this.scoreText.setText('SCORE: ' + parseInt(10 * this.scoreCounter.getElapsedSeconds()) + '0');
+            this.scoreText.setText('SCORE: ' + parseInt(10 * this.timer.getElapsedSeconds()) + '0');
+            this.score = parseInt(parseInt(this.timer.getElapsedSeconds() * 10) + '0')
         }
 
         // game over
         if(this.player.y > game.config.height){
-            this.highScore();
+            this.highScoreFunc();
             this.gameOver = true;
-            console.log(this.highScoreNumber)
             this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
             this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
             
@@ -205,13 +204,11 @@ class playGame extends Phaser.Scene{
         }
     };
 
-    highScore() { 
-        if (this.secondsElapsed > localStorage.getItem("HighScore")) {
-            this.highScoreNumber = this.secondsElapsed
-            localStorage.setItem("HighScore", this.highScoreNumber);
-            this.highScoreText.text = localStorage.getItem("HighScore") + ":High Score";
-            console.log(this.highScoreNumber)
+    highScoreFunc() { 
+        if (this.score > localStorage.getItem("HighScoreVar")) {
+            localStorage.setItem("HighScoreVar", this.score)
         }
+
      };
 };
 function resize(){

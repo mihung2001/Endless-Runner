@@ -87,10 +87,23 @@ class playGame extends Phaser.Scene{
         // checking for input
         this.input.on("pointerdown", this.jump, this);
 
-        let timeElapsedConfig = {
-            fontFamily: 'Lucida Console',
-            fontSize: '32px',
-            backgroundColor: '#171717',
+        let scoreConfig = {
+            fontFamily: 'Bebas Neue',
+            fontSize: '48px',
+            color: '#FFFFFFFF',
+            align:'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+                left: 5,
+                right: 5,
+            },
+            fixedWidth: 0
+        }
+
+        let highScoreConfig = {
+            fontFamily: 'Bebas Neue',
+            fontSize: '48px',
             color: '#FFFFFFFF',
             align:'right',
             padding: {
@@ -101,8 +114,10 @@ class playGame extends Phaser.Scene{
             },
             fixedWidth: 0
         }
-        this.highScoreText = this.add.text(game.config.width / 1.315, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", timeElapsedConfig);
-        this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', timeElapsedConfig);
+
+        let 
+        this.highScoreText = this.add.text(game.config.width / 1.315, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
+        this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', scoreConfig);
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
         this.score = 0
         this.highScore = 0

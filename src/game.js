@@ -105,7 +105,7 @@ class playGame extends Phaser.Scene{
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
             color: '#FFFFFFFF',
-            align:'right',
+            align:'center',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -115,8 +115,7 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0
         }
 
-        let 
-        this.highScoreText = this.add.text(game.config.width / 1.315, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
+        this.highScoreText = this.add.text(game.config.width / 1.252, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
         this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', scoreConfig);
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
         this.score = 0

@@ -46,6 +46,7 @@ class playGame extends Phaser.Scene{
     }
     
     create(){
+
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.gameOver = false;
@@ -98,7 +99,8 @@ class playGame extends Phaser.Scene{
                 left: 5,
                 right: 5,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
+            resolution: 3,
         }
 
         let highScoreConfig = {
@@ -112,14 +114,39 @@ class playGame extends Phaser.Scene{
                 left: 5,
                 right: 5,
             },
-            fixedWidth: 0
+            fixedWidth: 0,
+            resolution: 3,
         }
+
+        let controlTextConfig = {
+            fontFamily: 'Bebas Neue',
+            fontSize: '48px',
+            color: '#FFFFFFFF',
+            backgroundColor: '#000000',
+            align:'center',
+            padding: {
+                top: 20,
+                bottom: 20,
+                left: 20,
+                right: 20,
+            },
+            fixedWidth: 0,
+            resolution: 3,
+        }
+        
+        this.controlText = this.add.text(game.config.width / 2.5, game.config.height / 2.5, "LEFT CLICK TO JUMP", controlTextConfig);
+        this.tweens.add({
+            targets: this.controlText,
+            alpha: 0,
+            duration: 3000,
+            repeat: 0,
+        })
 
         this.highScoreText = this.add.text(game.config.width / 1.252, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
         this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', scoreConfig);
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
-        this.score = 0
-        this.highScore = 0
+        this.score = 0;
+        this.highScore = 0;
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -165,6 +192,21 @@ class playGame extends Phaser.Scene{
     
     update(){
 
+        let scoreConfig = {
+            fontFamily: 'Bebas Neue',
+            fontSize: '48px',
+            color: '#FFFFFFFF',
+            align:'left',
+            padding: {
+                top: 5,
+                bottom: 5,
+                left: 5,
+                right: 5,
+            },
+            fixedWidth: 0,
+            resolution: 2,
+        }
+
         this.background.tilePositionX += 1;
         if(gameOptions.playerStartPosition < 365){
             gameOptions.platformStartSpeed += .5;
@@ -174,7 +216,6 @@ class playGame extends Phaser.Scene{
             gameOptions.platformSizeRange[1] -= .005;
         }
         
-
         if(this.player.y < game.config.height){
             this.scoreText.setText('SCORE: ' + parseInt(10 * this.timer.getElapsedSeconds()) + '0');
             this.score = parseInt(parseInt(this.timer.getElapsedSeconds() * 10) + '0')
@@ -184,9 +225,8 @@ class playGame extends Phaser.Scene{
         if(this.player.y > game.config.height){
             this.highScoreFunc();
             this.gameOver = true;
-            this.add.text(game.config.width/2 , game.config.height/2, 'GAME OVER',).setOrigin(0.5);
-            this.add.text(game.config.width/2 , game.config.height/2 + 64, 'Press SPACE to restart',).setOrigin(0.5);
-            
+            this.add.text(game.config.width/2 , game.config.height/2 - 64, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2 , game.config.height/2, 'Press SPACE to restart', scoreConfig).setOrigin(0.5);
         }
 
         //this.scene.restart("PlayGame");
@@ -221,6 +261,23 @@ class playGame extends Phaser.Scene{
     highScoreFunc() { 
         if (this.score > localStorage.getItem("HighScoreVar")) {
             localStorage.setItem("HighScoreVar", this.score)
+            let highScoreConfig = {
+                fontFamily: 'Bebas Neue',
+                fontSize: '48px',
+                color: '#FFFFFFFF',
+                align:'center',
+                padding: {
+                    top: 5,
+                    bottom: 5,
+                    left: 5,
+                    right: 5,
+                },
+                fixedWidth: 0,
+                resolution:3,
+                fontStyle: 'italic',
+            }
+            this.add.text(game.config.width/2 , game.config.height/2 + 64, 'NEW HIGH SCORE!', highScoreConfig).setOrigin(0.5)
+            this.add.text(game.config.width/2 , game.config.height/2 + 128, localStorage.getItem("HighScoreVar"), highScoreConfig).setOrigin(0.5).set
         }
 
      };

@@ -42,11 +42,11 @@ class playGame extends Phaser.Scene{
         this.load.image("player", "./assets/sprites/player.png");
         this.load.audio("first", "./assets/SFX/first.mp3")
         this.load.audio("second", "./assets/SFX/second.mp3")
+        this.load.audio("bgm", "./assets/SFX/BG.wav")
         this.load.image("background", "./assets/sprites/background.png")
     }
     
     create(){
-
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.gameOver = false;
@@ -54,6 +54,7 @@ class playGame extends Phaser.Scene{
         this.mostSeconds = 0;
 
         this.background = this.add.tileSprite(0, 0, 1334, 750, 'background').setOrigin(0, 0);
+        
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -147,6 +148,20 @@ class playGame extends Phaser.Scene{
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
         this.score = 0;
         this.highScore = 0;
+
+        this.bgMusic = this.sound.add("bgm");
+
+        let musicConfig = {
+            mute: false,
+            volume: 0.5,
+            rate: 1,
+            detune: 0,
+            seek: 0,
+            loop: true,
+            delay: 0
+        }
+
+        this.bgMusic.play(musicConfig);
     }
 
     // the core of the script: platform are added from the pool or created on the fly
@@ -184,9 +199,6 @@ class playGame extends Phaser.Scene{
             else {
                 this.sound.play("first", {volume: 0.1});
               }
-
-            
-            
         }
     }
     
@@ -234,7 +246,7 @@ class playGame extends Phaser.Scene{
             this.scene.start("PlayGame");
             gameOptions.platformStartSpeed = 350;
             gameOptions.platformSizeRange = [120, 250];
-        
+            this.bgMusic.stop();
         }
 
         this.player.x = gameOptions.playerStartPosition;

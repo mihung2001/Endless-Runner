@@ -91,7 +91,7 @@ class playGame extends Phaser.Scene{
         let scoreConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
-            color: '#FFFFFFFF',
+            color: '#C0FFC0',
             align:'left',
             padding: {
                 top: 5,
@@ -106,7 +106,7 @@ class playGame extends Phaser.Scene{
         let highScoreConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
-            color: '#FFFFFFFF',
+            color: '#C0FFC0',
             align:'center',
             padding: {
                 top: 5,
@@ -121,8 +121,8 @@ class playGame extends Phaser.Scene{
         let controlTextConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
-            color: '#FFFFFFFF',
-            backgroundColor: '#000000',
+            color: '#4B0082',
+            backgroundColor: '#C0FFC0',
             align:'center',
             padding: {
                 top: 20,
@@ -134,7 +134,7 @@ class playGame extends Phaser.Scene{
             resolution: 3,
         }
         
-        this.controlText = this.add.text(game.config.width / 2.5, game.config.height / 2.5, "LEFT CLICK TO JUMP", controlTextConfig);
+        this.controlText = this.add.text(game.config.width / 4, game.config.height / 2.5, "LEFT CLICK OR TAP TO JUMP", controlTextConfig);
         this.tweens.add({
             targets: this.controlText,
             alpha: 0,
@@ -142,7 +142,7 @@ class playGame extends Phaser.Scene{
             repeat: 0,
         })
 
-        this.highScoreText = this.add.text(game.config.width / 1.252, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
+        this.highScoreText = this.add.text(game.config.width / 1.47, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
         this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', scoreConfig);
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
         this.score = 0;
@@ -195,7 +195,7 @@ class playGame extends Phaser.Scene{
         let scoreConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
-            color: '#FFFFFFFF',
+            color: '#C0FFC0',
             align:'left',
             padding: {
                 top: 5,

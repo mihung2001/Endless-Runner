@@ -153,7 +153,7 @@ class playGame extends Phaser.Scene{
 
         let musicConfig = {
             mute: false,
-            volume: 0.5,
+            volume: 0.2,
             rate: 1,
             detune: 0,
             seek: 0,

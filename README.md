@@ -36,12 +36,12 @@ Be theoretically endless (5)
 
 Be playable for at least 15 seconds for a new player of low to moderate skill (5)
 
-- do something technically interesting? Are you particularly proud of a programming technique you implemented? Did you look beyond the class examples and learn how to do something new? (5)
+do something technically interesting? Are you particularly proud of a programming technique you implemented? Did you look beyond the class examples and learn how to do something new? (5)
 
-We used a platform function in order to generate the platforms randomly based on the distance between each.
+- We used a platform function in order to generate the platforms randomly based on the distance between each.
 
-- have a great visual style? Does it use music or art that you're particularly proud of? Are you trying something new or clever with the endless runner form? (5)
+have a great visual style? Does it use music or art that you're particularly proud of? Are you trying something new or clever with the endless runner form? (5)
 
-All the art work was done by Amir expect the music which was from: https://freesound.org/people/DirtyJewbs/sounds/145493/
+- All the art work was done by Amir expect the music which was from: https://freesound.org/people/DirtyJewbs/sounds/145493/
 
 

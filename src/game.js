@@ -1,3 +1,9 @@
+// Collaborators: Amir Valipour, Reini Igna, Huy Nguyen
+// Game Title: AstroBall Jump
+// Date Completed: May 16, 2022
+// Creative Tilt: We have a working highscore mechanic that utilizes local storage and fading text.
+//                We have a nice, simple art style that we are proud of. 
+
 let game;
 
 // global game options
@@ -37,6 +43,8 @@ class playGame extends Phaser.Scene{
     constructor(){
         super("PlayGame");
     }
+
+    // preloading of assets
     preload(){
         this.load.image("platform", "./assets/sprites/platform.png");
         this.load.image("player", "./assets/sprites/player.png");
@@ -47,14 +55,12 @@ class playGame extends Phaser.Scene{
     }
     
     create(){
+        // add SPACE as a key
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-
+        // initialize game over flag
         this.gameOver = false;
-
-        this.mostSeconds = 0;
-
+         // add background 
         this.background = this.add.tileSprite(0, 0, 1334, 750, 'background').setOrigin(0, 0);
-        
         // group with all active platforms.
         this.platformGroup = this.add.group({
 
@@ -88,7 +94,7 @@ class playGame extends Phaser.Scene{
 
         // checking for input
         this.input.on("pointerdown", this.jump, this);
-
+        // settings for score text
         let scoreConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
@@ -103,7 +109,7 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0,
             resolution: 3,
         }
-
+        // settings for highscore text
         let highScoreConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
@@ -118,7 +124,7 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0,
             resolution: 3,
         }
-
+        // settings for controls text
         let controlTextConfig = {
             fontFamily: 'Bebas Neue',
             fontSize: '48px',
@@ -134,23 +140,28 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0,
             resolution: 3,
         }
-        
+        // adding controls text
         this.controlText = this.add.text(game.config.width / 4, game.config.height / 2.5, "LEFT CLICK OR TAP TO JUMP", controlTextConfig);
+        // fade controls text
         this.tweens.add({
             targets: this.controlText,
             alpha: 0,
             duration: 3000,
             repeat: 0,
         })
-
+        // adding highscore text
         this.highScoreText = this.add.text(game.config.width / 1.47, game.config.height * 0.0001, localStorage.getItem("HighScoreVar") + " :HIGH SCORE", highScoreConfig);
+        // adding score text
         this.scoreText = this.add.text(this.player.posX, this.player.posY, 'Time:', scoreConfig);
+        // adding timer
         this.timer = this.time.addEvent({ delay: 99999999999, callback: this.onClockEvent, callbackScope: this, repeat: 1 });
+        // initialize score
         this.score = 0;
+        // initialize highscore
         this.highScore = 0;
-
+        // adding background music
         this.bgMusic = this.sound.add("bgm");
-
+        // settings for music
         let musicConfig = {
             mute: false,
             volume: 0.2,
@@ -218,8 +229,9 @@ class playGame extends Phaser.Scene{
             fixedWidth: 0,
             resolution: 2,
         }
-
+        // make background scoll
         this.background.tilePositionX += 1;
+
         if(gameOptions.playerStartPosition < 365){
             gameOptions.platformStartSpeed += .5;
         }
@@ -228,6 +240,7 @@ class playGame extends Phaser.Scene{
             gameOptions.platformSizeRange[1] -= .005;
         }
         
+        // update score and score text while player is alive
         if(this.player.y < game.config.height){
             this.scoreText.setText('SCORE: ' + parseInt(10 * this.timer.getElapsedSeconds()) + '0');
             this.score = parseInt(parseInt(this.timer.getElapsedSeconds() * 10) + '0')
@@ -241,7 +254,7 @@ class playGame extends Phaser.Scene{
             this.add.text(game.config.width/2 , game.config.height/2, 'Press SPACE to restart', scoreConfig).setOrigin(0.5);
         }
 
-        //this.scene.restart("PlayGame");
+        // reset game
         if(this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)){
             this.scene.start("PlayGame");
             gameOptions.platformStartSpeed = 350;
@@ -270,6 +283,7 @@ class playGame extends Phaser.Scene{
         }
     };
 
+    // storing and pulling highscore
     highScoreFunc() { 
         if (this.score > localStorage.getItem("HighScoreVar")) {
             localStorage.setItem("HighScoreVar", this.score)
